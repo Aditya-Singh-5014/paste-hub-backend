@@ -14,15 +14,10 @@ dotenv.config();
 
 const app = express();
 
-const webOrigin = process.env.WEB_ORIGIN;
-const corsOrigin = webOrigin
-  ? webOrigin.split(',').map((origin) => origin.trim()).filter(Boolean)
-  : true;
-
-// CORS configuration - must come before other middleware
+// CORS configuration - allow all origins
 app.use(cors({
-  origin: corsOrigin,
-  credentials: true,
+  origin: '*',
+  credentials: false,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   exposedHeaders: ['Content-Length', 'X-Requested-With'],
