@@ -19,10 +19,22 @@ const corsOrigin = webOrigin
   ? webOrigin.split(',').map((origin) => origin.trim()).filter(Boolean)
   : true;
 
-app.use(cors({ origin: corsOrigin, credentials: true }));
-app.use(helmet({
-  crossOriginResourcePolicy: { policy: "cross-origin" }
+// CORS configuration - must come before other middleware
+app.use(cors({
+  origin: corsOrigin,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: ['Content-Length', 'X-Requested-With'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204
 }));
+
+app.use(helmet({
+  crossOriginResourcePolicy: false,
+  crossOriginEmbedderPolicy: false
+}));
+
 app.use(express.json());
 
 app.get('/api/healthz', async (_req, res) => {
