@@ -19,8 +19,10 @@ const corsOrigin = webOrigin
   ? webOrigin.split(',').map((origin) => origin.trim()).filter(Boolean)
   : true;
 
-app.use(helmet());
-app.use(cors({ origin: corsOrigin }));
+app.use(cors({ origin: corsOrigin, credentials: true }));
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
 app.use(express.json());
 
 app.get('/api/healthz', async (_req, res) => {
